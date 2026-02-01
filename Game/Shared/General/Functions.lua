@@ -141,6 +141,10 @@ function NUI:LoadProfiles()
         end
     end
 
+    if SE.EditModeProfileExists and SE.EditModeProfileExists() then
+        SE.ApplyEditModeProfile(false)
+    end
+
     self.db.char.loaded = true
 
     ReloadUI()
