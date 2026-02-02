@@ -117,19 +117,13 @@ end
 function NUI:HandleChatCommand(input)
     local command = chatCommands[input]
 
-    if self:IsAddOnEnabled("NephUI") or self:IsAddOnEnabled("NephUI Cooldown Manager") then
-        self:Print("Disable NephUI and NephUI Cooldown Manager to unlock this functionality")
+    if not command then
+        self:Print("Command does not exist")
 
         return
-    else
-        if not command then
-            self:Print("Command does not exist")
-
-            return
-        end
-
-        command()
     end
+
+    command()
 end
 
 function NUI:LoadProfiles()
