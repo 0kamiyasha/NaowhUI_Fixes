@@ -110,6 +110,20 @@ function NUI:RunInstaller()
     self:OpenSettings()
 end
 
+function NUI:LoadProfiles()
+    local SE = NUI:GetModule("Setup")
+
+    for k in pairs(self.db.global.profiles) do
+        if self:IsAddOnEnabled(k) then
+            SE:Setup(k)
+        end
+    end
+
+    self.db.char.loaded = true
+
+    ReloadUI()
+end
+
 function chatCommands.install()
     NUI:RunInstaller()
 end
@@ -130,18 +144,4 @@ function NUI:HandleChatCommand(input)
 
         command()
     end
-end
-
-function NUI:LoadProfiles()
-    local SE = NUI:GetModule("Setup")
-
-    for k in pairs(self.db.global.profiles) do
-        if self:IsAddOnEnabled(k) then
-            SE:Setup(k)
-        end
-    end
-
-    self.db.char.loaded = true
-
-    ReloadUI()
 end

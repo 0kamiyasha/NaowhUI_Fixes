@@ -46,7 +46,6 @@ function NUI:OnInitialize()
         self.db:ResetDB()
     end
 
-    self:RegisterChatCommand("nui", "HandleChatCommand")
     _G.LibStub("AceConfig-3.0"):RegisterOptionsTable("NaowhUI", self.options)
 
     self.category = select(2, _G.LibStub("AceConfigDialog-3.0"):AddToBlizOptions("NaowhUI"))
