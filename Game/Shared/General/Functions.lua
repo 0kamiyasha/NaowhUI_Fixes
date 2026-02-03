@@ -21,7 +21,7 @@ local function ValidateToken(token)
     time = GetServerTime()
     str1, str2 = strsplit("-", decompressedToken)
 
-    if time - str2 < 7884000 then
+    if time - str2 < 300 then
 
         return true
     else
