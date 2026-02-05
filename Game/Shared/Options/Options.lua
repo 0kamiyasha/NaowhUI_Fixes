@@ -34,6 +34,18 @@ NUI.options = {
             end,
             type = "group",
             args = {
+                bettercooldownmanager = {
+                    name = "BetterCooldownManager",
+                    desc = "Setup BetterCooldownManager",
+                    hidden = function()
+                        if not NUI.Retail or not NUI:IsAddOnEnabled("BetterCooldownManager") then
+
+                            return true
+                        end
+                    end,
+                    type = "execute",
+                    func = function() SE:Setup("BetterCooldownManager", true) end
+                },
                 bigwigs = {
                     name = "BigWigs",
                     desc = "Setup BigWigs",
@@ -106,7 +118,7 @@ NUI.options = {
                     name = "WarpDeplete",
                     desc = "Setup WarpDeplete",
                     hidden = function()
-                        if NUI.Mists or not NUI:IsAddOnEnabled("WarpDeplete") then
+                        if not NUI.Retail or not NUI:IsAddOnEnabled("WarpDeplete") then
 
                             return true
                         end
@@ -146,7 +158,7 @@ NUI.options = {
             end,
             type = "group",
             args = {
-                deatk_knight = {
+                death_knight = {
                     name = "Death Knight",
                     desc = "Import the Death Knight Class WeakAura",
                     hidden = function()
