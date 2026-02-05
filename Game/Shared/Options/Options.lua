@@ -8,15 +8,8 @@ local function AreAddOnsEnabled()
         ["BigWigs"] = true,
         ["Details"] = true,
         ["HidingBar"] = true,
-        ["Plater"] = true,
-        ["WarpDeplete"] = true
+        ["Plater"] = true
     }
-
-    if NUI.Retail then
-        addons.HidingBar = nil
-    else
-        addons.WarpDeplete = nil
-    end
 
     for k in pairs(addons) do
         if NUI:IsAddOnEnabled(k) then
@@ -34,13 +27,25 @@ NUI.options = {
             name = "Profiles",
             order = 1,
             hidden = function()
-                if not NUI:IsTokenValid(true) or NUI:IsAddOnEnabled("ElvUI") or not AreAddOnsEnabled() or InCombatLockdown() then
+                if not NUI:IsTokenValid(true) or NUI:IsAddOnEnabled("ElvUI") or (not NUI.Retail and not AreAddOnsEnabled()) or InCombatLockdown() then
 
                     return true
                 end
             end,
             type = "group",
             args = {
+                bettercooldownmanager = {
+                    name = "BetterCooldownManager",
+                    desc = "Setup BetterCooldownManager",
+                    hidden = function()
+                        if not NUI.Retail or not NUI:IsAddOnEnabled("BetterCooldownManager") then
+
+                            return true
+                        end
+                    end,
+                    type = "execute",
+                    func = function() SE:Setup("BetterCooldownManager", true) end
+                },
                 bigwigs = {
                     name = "BigWigs",
                     desc = "Setup BigWigs",
@@ -52,6 +57,18 @@ NUI.options = {
                     end,
                     type = "execute",
                     func = function() SE:Setup("BigWigs", true) end
+                },
+                blizzard_editmode = {
+                    name = "Blizzard_EditMode",
+                    desc = "Setup Blizzard_EditMode",
+                    hidden = function()
+                        if not NUI.Retail then
+
+                            return true
+                        end
+                    end,
+                    type = "execute",
+                    func = function() SE:Setup("Blizzard_EditMode", true) end
                 },
                 details = {
                     name = "Details",
@@ -69,7 +86,7 @@ NUI.options = {
                     name = "HidingBar",
                     desc = "Setup HidingBar",
                     hidden = function()
-                        if not NUI:IsAddOnEnabled("HidingBar") or NUI.Retail then
+                        if NUI.Retail or not NUI:IsAddOnEnabled("HidingBar") then
 
                             return true
                         end
@@ -101,7 +118,7 @@ NUI.options = {
                     name = "WarpDeplete",
                     desc = "Setup WarpDeplete",
                     hidden = function()
-                        if not NUI:IsAddOnEnabled("WarpDeplete") or NUI.Mists then
+                        if not NUI.Retail or not NUI:IsAddOnEnabled("WarpDeplete") then
 
                             return true
                         end
@@ -115,7 +132,7 @@ NUI.options = {
             name = "General WeakAuras",
             order = 2,
             hidden = function()
-                if NUI.Retail or not NUI:IsTokenValid(true) or not NUI:IsAddOnEnabled("WeakAuras") or InCombatLockdown() then
+                if not NUI.Retail or not NUI:IsTokenValid(true) or not NUI:IsAddOnEnabled("WeakAuras") or InCombatLockdown() then
 
                     return true
                 end
@@ -141,7 +158,7 @@ NUI.options = {
             end,
             type = "group",
             args = {
-                deatk_knight = {
+                death_knight = {
                     name = "Death Knight",
                     desc = "Import the Death Knight Class WeakAura",
                     hidden = function()
@@ -230,7 +247,7 @@ NUI.options = {
                     name = "Load Profiles",
                     desc = "Load your installed profiles onto this character",
                     hidden = function()
-                        if NUI:IsAddOnEnabled("ElvUI") or not AreAddOnsEnabled() or not NUI.db.global.profiles or InCombatLockdown() then
+                        if NUI:IsAddOnEnabled("ElvUI") or (not NUI.Retail and not AreAddOnsEnabled()) or not NUI.db.global.profiles or InCombatLockdown() then
 
                             return true
                         end

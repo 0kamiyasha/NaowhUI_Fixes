@@ -29,9 +29,25 @@ I.installer = {
             PluginInstallFrame.Option1:SetText("1440p")
             --[[PluginInstallFrame.Option2:Show()
             PluginInstallFrame.Option2:SetScript("OnClick", function() SE:Setup("ElvUI", true, "1080p") end)
-            PluginInstallFrame.Option2:SetText("1080p (NYI)")]]
+            PluginInstallFrame.Option2:SetText("1080p")]]
         end,
         [3] = function()
+            PluginInstallFrame.SubTitle:SetText("BetterCooldownManager")
+
+            if not NUI:IsAddOnEnabled("BetterCooldownManager") then
+                PluginInstallFrame.Desc1:SetText("Enable BetterCooldownManager to unlock this step")
+
+                return
+            end
+
+            PluginInstallFrame.Option1:Show()
+            PluginInstallFrame.Option1:SetScript("OnClick", function() SE:Setup("BetterCooldownManager", true) end)
+            PluginInstallFrame.Option1:SetText("1440p")
+            --[[PluginInstallFrame.Option2:Show()
+            PluginInstallFrame.Option2:SetScript("OnClick", function() SE:Setup("BetterCooldownManager", true, "1080p") end)
+            PluginInstallFrame.Option2:SetText("1080p")]]
+        end,
+        [4] = function()
             PluginInstallFrame.SubTitle:SetText("BigWigs")
 
             if not NUI:IsAddOnEnabled("BigWigs") then
@@ -45,9 +61,18 @@ I.installer = {
             PluginInstallFrame.Option1:SetText("1440p")
             --[[PluginInstallFrame.Option2:Show()
             PluginInstallFrame.Option2:SetScript("OnClick", function() SE:Setup("BigWigs", true, "1080p") end)
-            PluginInstallFrame.Option2:SetText("1080p (NYI)")]]
+            PluginInstallFrame.Option2:SetText("1080p")]]
         end,
-        [4] = function()
+        [5] = function()
+            PluginInstallFrame.SubTitle:SetText("Blizzard_EditMode")
+            PluginInstallFrame.Option1:Show()
+            PluginInstallFrame.Option1:SetScript("OnClick", function() SE:Setup("Blizzard_EditMode", true) end)
+            PluginInstallFrame.Option1:SetText("1440p")
+            --[[PluginInstallFrame.Option2:Show()
+            PluginInstallFrame.Option2:SetScript("OnClick", function() SE:Setup("Blizzard_EditMode", true, "1080p") end)
+            PluginInstallFrame.Option2:SetText("1080p")]]
+        end,
+        [6] = function()
             PluginInstallFrame.SubTitle:SetText("Details")
 
             if not NUI:IsAddOnEnabled("Details") then
@@ -61,9 +86,9 @@ I.installer = {
             PluginInstallFrame.Option1:SetText("1440p")
             --[[PluginInstallFrame.Option2:Show()
             PluginInstallFrame.Option2:SetScript("OnClick", function() SE:Setup("Details", true, "1080p") end)
-            PluginInstallFrame.Option2:SetText("1080p (NYI)")]]
+            PluginInstallFrame.Option2:SetText("1080p")]]
         end,
-        [5] = function()
+        [7] = function()
             PluginInstallFrame.SubTitle:SetText("Plater")
 
             if not NUI:IsAddOnEnabled("Plater") then
@@ -77,9 +102,9 @@ I.installer = {
             PluginInstallFrame.Option1:SetText("1440p")
             --[[PluginInstallFrame.Option2:Show()
             PluginInstallFrame.Option2:SetScript("OnClick", function() SE:Setup("Plater", true, "1080p") end)
-            PluginInstallFrame.Option2:SetText("1080p (NYI)")]]
+            PluginInstallFrame.Option2:SetText("1080p")]]
         end,
-        [6] = function()
+        [8] = function()
             PluginInstallFrame.SubTitle:SetText("WarpDeplete")
 
             if not NUI:IsAddOnEnabled("WarpDeplete") then
@@ -93,36 +118,7 @@ I.installer = {
             PluginInstallFrame.Option1:SetText("1440p")
             --[[PluginInstallFrame.Option2:Show()
             PluginInstallFrame.Option2:SetScript("OnClick", function() SE:Setup("WarpDeplete", true, "1080p") end)
-            PluginInstallFrame.Option2:SetText("1080p (NYI)")]]
-        end,
-        [7] = function()
-            PluginInstallFrame.SubTitle:SetText("Class Cooldown Layouts")
-
-            local className = SE.GetPlayerClassDisplayName and SE.GetPlayerClassDisplayName() or UnitClass("player")
-
-            PluginInstallFrame.Desc1:SetText("Install Edit Mode and Cooldown Manager layouts for your class.")
-            PluginInstallFrame.Desc2:SetText("|cffFFFF00Note:|r This only installs layouts for |cff00FF00" .. className .. "|r (all specs).")
-            PluginInstallFrame.Desc3:SetText("Make sure the Cooldown Manager is enabled in Advanced Options.")
-
-            PluginInstallFrame.Option1:Show()
-            PluginInstallFrame.Option1:SetScript("OnClick", function() SE:Setup("ClassCooldowns", true) end)
-            PluginInstallFrame.Option1:SetText("Install Class Layout")
-        end,
-        [8] = function()
-            PluginInstallFrame.SubTitle:SetText("Placeholder")
-
-            --[[if not NUI:IsAddOnEnabled("WarpDeplete") then
-                PluginInstallFrame.Desc1:SetText("Enable WarpDeplete to unlock this step")
-
-                return
-            end]]
-
-            PluginInstallFrame.Option1:Show()
-            PluginInstallFrame.Option1:SetScript("OnClick", function()end)
-            PluginInstallFrame.Option1:SetText("NYI")
-            PluginInstallFrame.Option2:Show()
-            PluginInstallFrame.Option2:SetScript("OnClick", function()end)
-            PluginInstallFrame.Option2:SetText("NYI")
+            PluginInstallFrame.Option2:SetText("1080p")]]
         end,
         [9] = function()
             PluginInstallFrame.SubTitle:SetText("Installation Complete")
@@ -136,12 +132,12 @@ I.installer = {
     StepTitles = {
         [1] = "Welcome",
         [2] = "ElvUI",
-        [3] = "BigWigs",
-        [4] = "Details",
-        [5] = "Plater",
-        [6] = "WarpDeplete",
-        [7] = "Class Cooldowns",
-        [8] = "Placeholder",
+        [3] = "BetterCooldownManager",
+        [4] = "BigWigs",
+        [5] = "Blizzard_EditMode",
+        [6] = "Details",
+        [7] = "Plater",
+        [8] = "WarpDeplete",
         [9] = "Installation Complete"
     },
     StepTitlesColor = {1, 1, 1},

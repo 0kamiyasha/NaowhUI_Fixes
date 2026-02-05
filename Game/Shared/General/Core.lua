@@ -1,7 +1,9 @@
 local NUI = unpack(NaowhUI)
 
-local tonumber, unpack = tonumber, unpack
+local tonumber, ipairs, unpack = tonumber, ipairs, unpack
 local format = format
+
+local DisableAddOn = C_AddOns.DisableAddOn
 
 NUI.title = format("|cff0091edNaowh|r|cffffa300UI|r")
 NUI.version = tonumber(C_AddOns.GetAddOnMetadata("NaowhUI", "Version"))
@@ -10,6 +12,12 @@ NUI.myname = UnitName("player")
 function NUI:Initialize()
     local Details = Details
     local E
+    local addons = {
+        "NaowhUI_Installer",
+        "NephUI",
+        "NephUI Cooldown Manager",
+        "SharedMedia_Naowh"
+    }
 
     if self:IsAddOnEnabled("Details") then
         if Details.is_first_run and #Details.custom == 0 then
@@ -45,5 +53,9 @@ function NUI:Initialize()
         StaticPopup_Show("LoadProfiles")
     end
 
-    self:RegisterChatCommand("nui", "HandleChatCommand")
+    for _, v in ipairs(addons) do
+        if self:IsAddOnEnabled(v) then
+            DisableAddOn(v)
+        end
+    end
 end

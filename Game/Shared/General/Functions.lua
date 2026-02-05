@@ -135,27 +135,7 @@ function NUI:LoadProfiles()
         end
     end
 
-    if SE.EditModeProfileExists and SE.EditModeProfileExists() then
-        SE.ApplyEditModeProfile(false)
-    end
-
     self.db.char.loaded = true
 
     ReloadUI()
-end
-
-function chatCommands.install()
-    NUI:RunInstaller()
-end
-
-function NUI:HandleChatCommand(input)
-    local command = chatCommands[input]
-
-    if not command then
-        self:Print("Command does not exist")
-
-        return
-    end
-
-    command()
 end

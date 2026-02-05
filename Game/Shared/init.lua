@@ -47,9 +47,6 @@ function NUI:OnInitialize()
     end
 
     self:RegisterChatCommand("nui", "HandleChatCommand")
-    self:RegisterChatCommand("naowhui", "RunInstaller")
-    self:SecureSlashCommand()
-
     _G.LibStub("AceConfig-3.0"):RegisterOptionsTable("NaowhUI", self.options)
 
     self.category = select(2, _G.LibStub("AceConfigDialog-3.0"):AddToBlizOptions("NaowhUI"))
