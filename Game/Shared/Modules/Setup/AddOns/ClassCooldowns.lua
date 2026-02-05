@@ -1,95 +1,47 @@
 local NUI = unpack(NaowhUI)
 local SE = NUI:GetModule("Setup")
+local D = NUI:GetModule("Data")
 
-local classKeys = {
-    ["DEATHKNIGHT"] = "deathknight",
-    ["DEMONHUNTER"] = "demonhunter",
-    ["DRUID"] = "druid",
-    ["EVOKER"] = "evoker",
-    ["HUNTER"] = "hunter",
-    ["MAGE"] = "mage",
-    ["MONK"] = "monk",
-    ["PALADIN"] = "paladin",
-    ["PRIEST"] = "priest",
-    ["ROGUE"] = "rogue",
-    ["SHAMAN"] = "shaman",
-    ["WARLOCK"] = "warlock",
-    ["WARRIOR"] = "warrior",
-}
-
-local function getPlayerClassKey()
-    local _, className = UnitClass("player")
-
-    return classKeys[className]
+local function getClassKey()
+    local _, class = UnitClass("player")
+    return class and strlower(class)
 end
 
 function SE.ImportClassCooldowns()
-    if InCombatLockdown and InCombatLockdown() then
-        NUI:Print("Cannot import cooldowns in combat")
-
+    if InCombatLockdown and InCombatLockdown() then return false end
+    if not CooldownViewerSettings then return false end
+    if C_CooldownViewer and C_CooldownViewer.IsCooldownViewerAvailable and not C_CooldownViewer.IsCooldownViewerAvailable() then
         return false
     end
 
-    if not (C_CooldownViewer and C_CooldownViewer.SetLayoutData) then
-        NUI:Print("C_CooldownViewer API not available")
+    local classData = D[getClassKey()]
+    if not classData then return false end
 
-        return false
-    end
+    local layoutManager = CooldownViewerSettings:GetLayoutManager()
+    if not layoutManager then return false end
 
-    if C_CooldownViewer.IsCooldownViewerAvailable then
-        local available = C_CooldownViewer.IsCooldownViewerAvailable()
+    local ok, layoutIDs = pcall(layoutManager.CreateLayoutsFromSerializedData, layoutManager, classData)
+    if not ok or not layoutIDs or #layoutIDs == 0 then return false end
 
-        if not available then
-            NUI:Print("Cooldown Manager not enabled (check Advanced Options)")
+    layoutManager:SetActiveLayoutByID(layoutIDs[1])
+    layoutManager:SaveLayouts()
 
-            return false
-        end
-    end
-
-    local D = NUI:GetModule("Data")
-    local classKey = getPlayerClassKey()
-
-    if not classKey then
-        NUI:Print("Could not determine player class")
-
-        return false
-    end
-
-    local classData = D[classKey]
-
-    if not classData then
-        NUI:Print("No cooldown data for class: " .. classKey)
-
-        return false
-    end
-
-    local ok, err = pcall(C_CooldownViewer.SetLayoutData, classData)
-
-    if not ok then
-        NUI:Print("Cooldown import failed: " .. tostring(err))
-
-        return false
+    if StaticPopup1Button2Text and StaticPopup1Button2Text:GetText() == "Ignore" then
+        StaticPopup1Button2:Click()
     end
 
     return true
 end
 
 function SE.ClassCooldownDataExists()
-    local D = NUI:GetModule("Data")
-    local classKey = getPlayerClassKey()
-
-    if not classKey then return false end
-
-    return D[classKey] ~= nil
+    return D[getClassKey()] ~= nil
 end
 
-function SE.ClassCooldowns(addon, import, resolution)
+function SE.ClassCooldowns(addon, import)
     if import then
         SE.ApplyEditModeProfile(true)
-
         if SE.ImportClassCooldowns() then
             SE.CompleteSetup(addon)
-
             NUI.db.char.loaded = true
             NUI.db.global.version = NUI.version
         end
@@ -98,7 +50,5 @@ end
 
 function SE.GetPlayerClassDisplayName()
     local _, className = UnitClass("player")
-    local localizedClass = LOCALIZED_CLASS_NAMES_MALE[className]
-
-    return localizedClass or className
+    return LOCALIZED_CLASS_NAMES_MALE[className] or className
 end
